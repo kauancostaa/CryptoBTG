@@ -1,14 +1,14 @@
-﻿
+
 const AWS_CONFIG = {
   region: "sa-east-1", // Altere para sua regio
   credentials: {
-    accessKeyId: "AKIA3YAUVERRGMY2HS46", // Substitua com sua Access Key
-    secretAccessKey: "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", // Substitua com sua Secret Key
+    accessKeyId: "", // Substitua com sua Access Key
+    secretAccessKey: "", // Substitua com sua Secret Key
   },
 };
 
 // Bucket S3 para armazenar as ordens
-const S3_BUCKET = "s3-sample-test-2026"; // Altere para o nome do seu bucket
+const S3_BUCKET = ""; // Altere para o nome do seu bucket
 
 // Verificar se AWS SDK est disponvel
 let AWS;
