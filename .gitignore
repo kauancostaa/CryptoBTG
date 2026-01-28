@@ -1,6 +1,35 @@
-﻿node_modules/
-.env
+﻿## .NET ##
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.cache
+*.pdb
+
+## Frontend ##
+node_modules/
 dist/
 build/
-*.log
+.next/
+.nuxt/
+
+## System ##
 .DS_Store
+Thumbs.db
+desktop.ini
+
+## Environment ##
+.env
+.env.local
+.env.production
+.env.development
+*.env
+
+## IDE ##
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
