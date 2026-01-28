@@ -1,0 +1,92 @@
+﻿name: Deploy CryptoBTG to Azure
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Instalar dependências
+      run: npm ci
+    
+    - name: Executar testes
+      run: npm test -- --watchAll=false
+    
+    - name: Build da aplicação
+      run: npm run build
+    
+    - name: Login no GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Build e push da imagem Docker
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./docker/Dockerfile
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository }}:latest
+          ghcr.io/${{ github.repository }}:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  deploy-to-azure:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+    
+    - name: Get AKS credentials
+      uses: azure/aks-set-context@v3
+      with:
+        resource-group: ${{ secrets.AZURE_RG }}
+        cluster-name: ${{ secrets.AKS_CLUSTER_NAME }}
+    
+    - name: Deploy to AKS
+      run: |
+        # Aplicar configurações
+        kubectl apply -f k8s/configmap.yaml
+        
+        # Atualizar deployment com nova imagem
+        kubectl set image deployment/cryptobtg-frontend \
+          cryptobtg-frontend=ghcr.io/${{ github.repository }}:${{ github.sha }} \
+          --record
+        
+        # Verificar status
+        kubectl rollout status deployment/cryptobtg-frontend
+        
+        # Mostrar serviços
+        kubectl get services

@@ -1,0 +1,9 @@
+﻿name: Deploy
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build Docker
+      run: docker build -f docker/Dockerfile -t cryptobtg .

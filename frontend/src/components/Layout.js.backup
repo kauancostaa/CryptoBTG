@@ -1,0 +1,222 @@
+﻿import React, { useState } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Box,
+  Avatar,
+  Chip,
+  Container,
+  useTheme,
+  alpha
+} from '@mui/material';
+import {
+  Menu as MenuIcon,
+  Dashboard as DashboardIcon,
+  TrendingUp as TrendingUpIcon,
+  AccountBalance as AccountBalanceIcon,
+  Wallet as WalletIcon,
+  Notifications as NotificationsIcon,
+  Person as PersonIcon,
+  Settings as SettingsIcon,
+  Logout as LogoutIcon,
+  Security as SecurityIcon
+} from '@mui/icons-material';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+const drawerWidth = 260;
+
+const menuItems = [
+  { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
+  { text: 'Mercado', icon: <TrendingUpIcon />, path: '/market' },
+  { text: 'Trading', icon: <AccountBalanceIcon />, path: '/trading' },
+  { text: 'Portfólio', icon: <WalletIcon />, path: '/portfolio' },
+];
+
+const Layout = ({ children }) => {
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Avatar sx={{ bgcolor: theme.palette.primary.main }}>
+          <SecurityIcon />
+        </Avatar>
+        <Box>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            CryptoBTG
+          </Typography>
+          <Typography variant="caption" sx={{ color: theme.palette.primary.light }}>
+            Professional
+          </Typography>
+        </Box>
+      </Box>
+      
+      <Box sx={{ flex: 1, px: 2 }}>
+        <List>
+          {menuItems.map((item) => (
+            <ListItem
+              key={item.text}
+              button
+              selected={location.pathname === item.path}
+              onClick={() => {
+                navigate(item.path);
+                setMobileOpen(false);
+              }}
+              sx={{
+                mb: 1,
+                borderRadius: 2,
+                '&.Mui-selected': {
+                  backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                  '&:hover': {
+                    backgroundColor: alpha(theme.palette.primary.main, 0.2),
+                  },
+                },
+              }}
+            >
+              <ListItemIcon sx={{ 
+                color: location.pathname === item.path 
+                  ? theme.palette.primary.main 
+                  : theme.palette.text.secondary 
+              }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText 
+                primary={item.text}
+                primaryTypographyProps={{
+                  fontWeight: location.pathname === item.path ? 600 : 400,
+                }}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+      
+      <Box sx={{ p: 2, borderTop: '1px solid #e0e0e0' }}>
+        <ListItem button sx={{ borderRadius: 2 }}>
+          <ListItemIcon>
+            <SettingsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Configurações" />
+        </ListItem>
+        <ListItem button sx={{ borderRadius: 2, color: theme.palette.error.main }}>
+          <ListItemIcon sx={{ color: 'inherit' }}>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Sair" />
+        </ListItem>
+      </Box>
+    </Box>
+  );
+
+  return (
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: calc(100% - px) },
+          ml: { sm: ${drawerWidth}px },
+          backgroundColor: alpha(theme.palette.background.paper, 0.95),
+          backdropFilter: 'blur(10px)',
+          borderBottom: 1px solid ,
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <IconButton>
+              <NotificationsIcon />
+            </IconButton>
+            <Chip 
+              label="Sistema Online" 
+              color="success" 
+              size="small"
+              variant="outlined"
+            />
+            <Avatar sx={{ width: 32, height: 32 }}>
+              <PersonIcon />
+            </Avatar>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      >
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+              backgroundColor: theme.palette.background.paper,
+              borderRight: 1px solid ,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: drawerWidth,
+              backgroundColor: theme.palette.background.paper,
+              borderRight: 1px solid ,
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: calc(100% - px) },
+          mt: '64px',
+          minHeight: 'calc(100vh - 64px)',
+          backgroundColor: theme.palette.background.default,
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
+  );
+};
+
+export default Layout;

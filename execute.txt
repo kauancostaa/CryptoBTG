@@ -1,0 +1,24 @@
+cd C:\CryptoBTG\backend
+dotnet run
+#Fica rodando na porta 5000
+
+
+ 
+cd C:\CryptoBTG\frontend
+npm start
+#fica rodando na porta 3000
+
+
+#comandos Docker/K8s
+kubectl port-forward service/cryptobtg-service 8081:80
+
+
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│  TERMINAL 1     │  │  TERMINAL 2     │  │  TERMINAL 3     │
+│  BACKEND .NET   │  │  FRONTEND REACT │  │  KUBERNETES     │
+├─────────────────┤  ├─────────────────┤  ├─────────────────┤
+│ dotnet run      │  │ npm start       │  │ kubectl cmds    │
+│ Port: 5000      │  │ Port: 3000      │  │ Port: 8081      │
+│ API REST        │  │ Dev Server      │  │ Port-forward    │
+│ Swagger UI      │  │ Hot Reload      │  │ Container mgmt  │
+└─────────────────┘  └─────────────────┘  └─────────────────┘

@@ -1,0 +1,45 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "aksClusterName": {
+      "type": "string",
+      "defaultValue": "aks-cryptobtg",
+      "metadata": {
+        "description": "Nome do cluster AKS"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "brazilsouth",
+      "metadata": {
+        "description": "Localização dos recursos"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ContainerService/managedClusters",
+      "apiVersion": "2023-05-01",
+      "name": "[parameters('aksClusterName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "kubernetesVersion": "1.27",
+        "dnsPrefix": "cryptobtg",
+        "agentPoolProfiles": [
+          {
+            "name": "agentpool",
+            "count": 3,
+            "vmSize": "Standard_B2s",
+            "osType": "Linux",
+            "mode": "System"
+          }
+        ],
+        "servicePrincipalProfile": {
+          "clientId": "[parameters('servicePrincipalClientId')]",
+          "secret": "[parameters('servicePrincipalClientSecret')]"
+        }
+      }
+    }
+  ]
+}

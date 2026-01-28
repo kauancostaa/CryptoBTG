@@ -1,0 +1,10 @@
+﻿apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cryptobtg-config
+data:
+  # Configurações da aplicação (NÃO sensíveis)
+  APP_NAME: "CryptoBTG"
+  ENVIRONMENT: "production"
+  API_URL: "https://api.cryptobtg.com"
+  LOG_LEVEL: "info"

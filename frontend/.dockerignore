@@ -1,0 +1,36 @@
+﻿# .dockerignore OTIMIZADO
+node_modules
+.git
+.gitignore
+.vscode
+.idea
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+dist
+build
+coverage
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.md
+*.txt
+Thumbs.db
+*.dockerignore
+Dockerfile*
+docker-compose*
+# Excluir arquivos grandes desnecessários
+*.zip
+*.tar
+*.gz
+# Excluir pasta de mídia se não for essencial
+public/media/
+public/uploads/
+# Mantenha apenas o essencial para build
+!package.json
+!package-lock.json
+!public/
+!src/
