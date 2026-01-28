@@ -1,4 +1,4 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 //Add services
 builder.Services.AddControllers();
@@ -41,11 +41,11 @@ app.MapGet("/api/market/prices", () =>
 {
     var prices = new[]
     {
-        new { symbol = "BTCUSD", price = 45234.56m, change24h = 2.34m, volume = 28500000000m },
-        new { symbol = "ETHUSD", price = 2534.67m, change24h = 1.56m, volume = 12500000000m },
-        new { symbol = "BTGBRL", price = 254.89m, change24h = 2.78m, volume = 45000000m },
-        new { symbol = "ADAUSD", price = 0.5234m, change24h = 1.23m, volume = 450000000m },
-        new { symbol = "SOLUSD", price = 102.45m, change24h = 3.48m, volume = 2800000000m }
+        new { symbol = "BTC", price = 45234.56m, change24h = 2.34m, volume = 28500000000m },
+        new { symbol = "ETH", price = 2534.67m, change24h = 1.56m, volume = 12500000000m },
+        new { symbol = "BRL", price = 254.89m, change24h = 2.78m, volume = 45000000m },
+        new { symbol = "ADA", price = 0.5234m, change24h = 1.23m, volume = 450000000m },
+        new { symbol = "SOL", price = 102.45m, change24h = 3.48m, volume = 2800000000m }
     };
     
     return Results.Json(new { success = true, data = prices });
@@ -129,7 +129,7 @@ app.MapGet("/api/portfolio", (HttpContext context) =>
         {
             new { symbol = "BTC", quantity = 2.5m, avgPrice = 40000m, currentPrice = 45234.56m, value = 113086.40m },
             new { symbol = "ETH", quantity = 15.0m, avgPrice = 2000m, currentPrice = 2534.67m, value = 38020.05m },
-            new { symbol = "BTG", quantity = 1000.0m, avgPrice = 230m, currentPrice = 254.89m, value = 254890.00m }
+            new { symbol = "BRL", quantity = 1000.0m, avgPrice = 230m, currentPrice = 254.89m, value = 254890.00m }
         }
     };
     
